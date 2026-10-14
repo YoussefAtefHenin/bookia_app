@@ -1,6 +1,7 @@
 import 'package:bookia/core/routes/app_routes.dart';
 import 'package:bookia/features/auth/presentation/ui/login_screen.dart';
 import 'package:bookia/features/auth/presentation/ui/register_screen.dart';
+import 'package:bookia/features/welcome/presentation/ui/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
@@ -10,6 +11,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => LoginScreen());
       case AppRoutes.registerScreen:
         return MaterialPageRoute(builder: (_) => RegisterScreen());
+      case AppRoutes.welcomeScreen:
+        return MaterialPageRoute(builder: (_) => WelcomeScreen());
     }
   }
 }
