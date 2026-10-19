@@ -1,4 +1,3 @@
-<img width="1080" height="2400" alt="Screenshot_1792414269" src="https://github.com/user-attachments/assets/15bbb1d0-6bdf-480c-847f-e6c6e02fe82c" /># bookia
 
 A new Flutter project.
 
