@@ -1,3 +1,5 @@
+import 'package:bookia/core/services/locale/locale_helper.dart';
+import 'package:bookia/core/utils/app_constants.dart';
 import 'package:dio/dio.dart';
 
 class AuthRepo {
@@ -9,10 +11,16 @@ class AuthRepo {
   }) async {
     try {
       final response = await dio.post(
-        "https://codingarabic.eraapro.com/login",
+        "https://codingarabic.eraapro.com/api/login",
         data: {"email": email, "password": password},
       );
-      return response.statusCode == 200 || response.statusCode == 201;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        String? token = response.data["data"]["token"];
+        saveToken(token);
+        return true;
+      } else {
+        return false;
+      }
     } on DioException catch (e) {
       print("Login error: ${e.response?.statusCode}");
       print("Login response: ${e.response?.data}");
@@ -32,7 +40,7 @@ class AuthRepo {
   }) async {
     try {
       final response = await dio.post(
-        "https://codingarabic.eraapro.com/register",
+        "https://codingarabic.eraapro.com/api/register",
         data: {
           "name": username,
           "email": email,
@@ -40,7 +48,13 @@ class AuthRepo {
           "password_confirmation": confirmPassword,
         },
       );
-      return response.statusCode == 200 || response.statusCode == 201;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        String? token = response.data["data"]["token"];
+        saveToken(token);
+        return true;
+      } else {
+        return false;
+      }
     } on DioException catch (e) {
       print("Register error: ${e.response?.statusCode}");
       print("Register response: ${e.response?.data}");
@@ -50,5 +64,9 @@ class AuthRepo {
       print("Register unknown error: $e");
       return false;
     }
+  }
+
+  static Future<void> saveToken(String? token) async {
+    await LocaleHerper.prefs?.setString(AppConstants.userToken, token ?? "");
   }
 }
