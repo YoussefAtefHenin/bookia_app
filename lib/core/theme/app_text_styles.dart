@@ -24,4 +24,9 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.whiteColor,
   );
+  static TextStyle bookTitleStyle = TextStyle(
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w400,
+    color: AppColors.bookColor,
+  );
 }
