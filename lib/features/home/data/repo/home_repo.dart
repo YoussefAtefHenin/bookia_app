@@ -2,22 +2,40 @@ import 'package:bookia/core/networking/api_endpoints.dart';
 import 'package:bookia/core/networking/dio_factory.dart';
 import 'package:bookia/features/home/data/model/books_model.dart';
 // import 'package:dio/dio.dart';
+// import 'package:dio/dio.dart';
 
 class HomeRepo {
   // static Dio dio = Dio();
-  static getBestSellerBooks() async {
+  static Future<BooksModel?> getBestSellerBooks() async {
     try {
-      final Response = await DioFactory.dio?.get(
+      final response = await DioFactory.dio?.get(
         ApiEndpoints.productsBestseller,
       );
-      if (Response?.statusCode == 200) {
-        BooksModel books = BooksModel.fromJson(Response?.data);
+      if (response?.statusCode == 200) {
+        BooksModel books = BooksModel.fromJson(response?.data);
         return books;
       } else {
-        return false;
+        return null;
       }
     } catch (e) {
-      return false;
+      return null;
+    }
+  }
+
+  static Future<List<Products?>?> search(String text) async {
+    try {
+      final response = await DioFactory.dio?.get(
+        ApiEndpoints.search,
+        queryParameters: {"name": text},
+      );
+      if (response?.statusCode == 200) {
+        BooksModel booksModel = BooksModel.fromJson(response?.data);
+        return booksModel.data?.products;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
     }
   }
 }
