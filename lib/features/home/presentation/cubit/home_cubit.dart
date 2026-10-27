@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:bookia/features/home/data/model/books_model.dart';
+import 'package:bookia/features/home/data/model/sliders_model.dart';
 import 'package:bookia/features/home/data/repo/home_repo.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
@@ -26,6 +27,16 @@ class HomeCubit extends Cubit<HomeState> {
       emit(SearchSuccess(data));
     } else {
       emit(SearchError());
+    }
+  }
+
+  getSliders() async {
+    emit(SlidersLoading());
+    final response = await HomeRepo.getSlidets();
+    if (response is SlidersModel) {
+      emit(SlidersSuccess(response.data?.sliders));
+    } else {
+      emit(SlidersError());
     }
   }
 }

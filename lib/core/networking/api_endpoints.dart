@@ -5,4 +5,5 @@ class ApiEndpoints {
   static const String productsBestseller = "products-bestseller";
   static const String search = "products-search";
   static const String bookDetails = "products/";
+  static const String sliders = "sliders";
 }

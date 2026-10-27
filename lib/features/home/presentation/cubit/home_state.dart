@@ -22,3 +22,12 @@ final class SearchSuccess extends HomeState {
   final List<Products>? products;
   SearchSuccess(this.products);
 }
+
+final class SlidersLoading extends HomeState {}
+
+final class SlidersError extends HomeState {}
+
+final class SlidersSuccess extends HomeState {
+  final List<Sliders>? slider;
+  SlidersSuccess(this.slider);
+}

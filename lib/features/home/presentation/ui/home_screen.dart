@@ -1,7 +1,9 @@
+import 'package:bookia/core/theme/app_text_styles.dart';
 import 'package:bookia/features/home/data/model/books_model.dart';
 import 'package:bookia/features/home/presentation/cubit/home_cubit.dart';
 import 'package:bookia/features/home/presentation/ui/widgets/book_item.dart';
 import 'package:bookia/features/home/presentation/ui/widgets/home_app_bar.dart';
+import 'package:bookia/features/home/presentation/ui/widgets/home_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,10 +20,20 @@ class HomeScreen extends StatelessWidget {
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               10.verticalSpace,
               HomeAppBar(),
               25.verticalSpace,
+              HomeSlider(),
+
+              20.verticalSpace,
+              Text(
+                "Best Seller",
+                style: AppTextStyles.welcomeStyle.copyWith(fontSize: 24.sp),
+              ),
+              15.verticalSpace,
+
               BlocBuilder<HomeCubit, HomeState>(
                 builder: (context, state) {
                   if (state is GetBestSellerLoading) {
