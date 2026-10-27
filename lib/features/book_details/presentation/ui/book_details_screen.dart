@@ -1,135 +1,128 @@
-import 'package:bookia/core/widgets/arrow_back.dart';
+import 'package:bookia/core/theme/app_colors.dart';
 import 'package:bookia/features/book_details/presentation/cubit/book_details_cubit.dart';
+import 'package:bookia/features/book_details/presentation/ui/widgets/book_details_bottom_bar.dart';
+import 'package:bookia/features/book_details/presentation/ui/widgets/book_details_cover_view.dart';
+import 'package:bookia/features/book_details/presentation/ui/widgets/book_details_description.dart';
+import 'package:bookia/features/book_details/presentation/ui/widgets/book_details_error_view.dart';
+import 'package:bookia/features/book_details/presentation/ui/widgets/book_details_header.dart';
+import 'package:bookia/features/book_details/presentation/ui/widgets/book_details_meta_row.dart';
+import 'package:bookia/features/book_details/presentation/ui/widgets/book_details_skeleton.dart';
+import 'package:bookia/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BookDetailsScreen extends StatelessWidget {
-  const BookDetailsScreen({super.key});
+  final int? bookId;
+
+  const BookDetailsScreen({super.key, this.bookId});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       body: BlocBuilder<BookDetailsCubit, BookDetailsState>(
         builder: (context, state) {
-          if (state is GetBookDetailsLoading) {
-            return Center(child: CircularProgressIndicator());
+          if (state is GetBookDetailsLoading || state is BookDetailsInitial) {
+            return const BookDetailsSkeleton();
           } else if (state is GetBookDetailsSuccess) {
+            final details = state.details;
+
             return SafeArea(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 19.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    11.verticalSpace,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ArrowBack(),
-                        Icon(Icons.bookmark_border, size: 26.sp),
-                      ],
-                    ),
-                    20.verticalSpace,
-                    Expanded(
-                      child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  11.verticalSpace,
+                  // Top navigation & actions
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 19.w),
+                    child: BookDetailsHeader(details: details),
+                  ),
+
+                  // Scrollable Content
+                  Expanded(
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 19.w),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            10.verticalSpace,
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(5.r),
-                              child: Image.network(
-                                state.details?.image ?? "",
-                                height: 200.h,
-                                width: 130.w,
-                                fit: BoxFit.fill,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return SizedBox(
-                                    height: 200.h,
-                                    width: 130.w,
-                                    child: Icon(Icons.book, size: 50.sp),
-                                  );
-                                },
-                              ),
-                            ),
-                            14.verticalSpace,
+                            20.verticalSpace,
+
+                            // Realistic elevated 3D book cover with badges
+                            BookDetailsCoverView(details: details),
+                            20.verticalSpace,
+
+                            // Book Title
                             Text(
-                              state.details?.name ?? "",
+                              details?.name ?? "Book Title",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 23.sp,
+                                fontFamily: FontFamily.dm,
+                                fontSize: 22.sp,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color: AppColors.darkColor,
+                                height: 1.25,
                               ),
                             ),
-                            4.verticalSpace,
-                            Text(
-                              state.details?.category ?? "",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: const Color(0xFFBFA054),
+                            8.verticalSpace,
+
+                            // Category Chip
+                            if (details?.category != null &&
+                                details!.category!.isNotEmpty)
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 14.w,
+                                  vertical: 4.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryColor.withOpacity(
+                                    0.12,
+                                  ),
+                                  borderRadius: BorderRadius.circular(20.r),
+                                ),
+                                child: Text(
+                                  details.category!,
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.primaryColor,
+                                  ),
+                                ),
                               ),
+
+                            20.verticalSpace,
+
+                            // Key Stats & Highlights Row (Rating, Stock, Genre, Format)
+                            BookDetailsMetaRow(details: details),
+
+                            22.verticalSpace,
+
+                            // Expandable Synopsis / Overview
+                            BookDetailsDescription(
+                              description: details?.description,
                             ),
-                            18.verticalSpace,
-                            Text(
-                              state.details?.description ?? "",
-                              textAlign: TextAlign.justify,
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                height: 1.7,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black87,
-                              ),
-                            ),
+
+                            24.verticalSpace,
                           ],
                         ),
                       ),
                     ),
-                    12.verticalSpace,
-                    Row(
-                      children: [
-                        Text(
-                          "£${state.details?.priceAfterDiscount ?? state.details?.price ?? ""}",
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF2F2F2F),
-                          ),
-                        ),
-                        20.horizontalSpace,
-                        Expanded(
-                          flex: 2,
-                          child: SizedBox(
-                            height: 48.h,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF2F2F2F),
-                                foregroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6.r),
-                                ),
-                                elevation: 0,
-                              ),
-                              onPressed: () {},
-                              child: Text(
-                                "Add To Cart",
-                                style: TextStyle(
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    12.verticalSpace,
-                  ],
-                ),
+                  ),
+
+                  // Fixed Bottom Bar with Quantity Selector and Add to Cart
+                  BookDetailsBottomBar(details: details),
+                ],
               ),
             );
           } else {
-            return Center(child: Text("Error"));
+            return BookDetailsErrorView(
+              onRetry: () {
+                if (bookId != null) {
+                  context.read<BookDetailsCubit>().getDetails(bookId!);
+                }
+              },
+            );
           }
         },
       ),

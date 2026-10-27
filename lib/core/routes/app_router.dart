@@ -58,7 +58,7 @@ class AppRouter {
           builder: (_) {
             return BlocProvider(
               create: (context) => BookDetailsCubit()..getDetails(id),
-              child: BookDetailsScreen(),
+              child: BookDetailsScreen(bookId: id),
             );
           },
         );
