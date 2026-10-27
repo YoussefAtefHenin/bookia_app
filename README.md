@@ -16,4 +16,6 @@ A new Flutter project.
 
 <img width="300" height="600" alt="Screenshot_1793058488" src="https://github.com/user-attachments/assets/9532acec-b38c-4d02-a5a1-c67b5ef9a1d2" />
 <img width="300" height="600" alt="Screenshot_1793058500" src="https://github.com/user-attachments/assets/8b3e3379-5372-4528-9d58-84b952b69b50" />
-<img width="300" height="600" alt="Screenshot_1793058513" src="https://github.com/user-attachments/assets/ad3900fe-89dd-4533-8a29-8a66c0c99f56" />
+<img width="300" height="600" alt="Screenshot_1793106605" src="https://github.com/user-attachments/assets/908b62ef-1ff4-49b7-ad19-ddbf247bf492" />
+<img width="300" height="600" alt="Screenshot_1793106563" src="https://github.com/user-attachments/assets/1bf9a79c-f913-45ea-80f7-5882861d0411" />
+
