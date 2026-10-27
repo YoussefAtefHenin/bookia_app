@@ -14,55 +14,31 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 19.w),
-        child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              10.verticalSpace,
-              HomeAppBar(),
-              25.verticalSpace,
-              HomeSlider(),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 19.w),
+      child: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            10.verticalSpace,
+            HomeAppBar(),
+            25.verticalSpace,
+            HomeSlider(),
 
-              20.verticalSpace,
-              Text(
-                "Best Seller",
-                style: AppTextStyles.welcomeStyle.copyWith(fontSize: 24.sp),
-              ),
-              15.verticalSpace,
+            20.verticalSpace,
+            Text(
+              "Best Seller",
+              style: AppTextStyles.welcomeStyle.copyWith(fontSize: 24.sp),
+            ),
+            15.verticalSpace,
 
-              BlocBuilder<HomeCubit, HomeState>(
-                builder: (context, state) {
-                  if (state is GetBestSellerLoading) {
-                    return Expanded(
-                      child: Skeletonizer(
-                        enabled: true,
-                        child: GridView.builder(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: .565,
-                                mainAxisSpacing: 14.h,
-                                crossAxisSpacing: 18.w,
-                              ),
-                          itemBuilder: ((context, index) => BookItem(
-                            product: Products(
-                              name: "flutter",
-
-                              price: "122",
-                              image:
-                                  "https://i.pinimg.com/736x/a7/23/92/a7239282a9231a2eae2fd5be2116df28.jpg",
-                            ),
-                          )),
-                          itemCount: 20,
-                        ),
-                      ),
-                    );
-                  } else if (state is GetBestSellerSuccess) {
-                    return Expanded(
+            BlocBuilder<HomeCubit, HomeState>(
+              builder: (context, state) {
+                if (state is GetBestSellerLoading) {
+                  return Expanded(
+                    child: Skeletonizer(
+                      enabled: true,
                       child: GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
@@ -70,18 +46,39 @@ class HomeScreen extends StatelessWidget {
                           mainAxisSpacing: 14.h,
                           crossAxisSpacing: 18.w,
                         ),
-                        itemBuilder: ((context, index) =>
-                            BookItem(product: state.products?[index])),
-                        itemCount: state.products?.length,
+                        itemBuilder: ((context, index) => BookItem(
+                          product: Products(
+                            name: "flutter",
+
+                            price: "122",
+                            image:
+                                "https://i.pinimg.com/736x/a7/23/92/a7239282a9231a2eae2fd5be2116df28.jpg",
+                          ),
+                        )),
+                        itemCount: 20,
                       ),
-                    );
-                  } else {
-                    return Center(child: Text("Error"));
-                  }
-                },
-              ),
-            ],
-          ),
+                    ),
+                  );
+                } else if (state is GetBestSellerSuccess) {
+                  return Expanded(
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: .565,
+                        mainAxisSpacing: 14.h,
+                        crossAxisSpacing: 18.w,
+                      ),
+                      itemBuilder: ((context, index) =>
+                          BookItem(product: state.products?[index])),
+                      itemCount: state.products?.length,
+                    ),
+                  );
+                } else {
+                  return Center(child: Text("Error"));
+                }
+              },
+            ),
+          ],
         ),
       ),
     );

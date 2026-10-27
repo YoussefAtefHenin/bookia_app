@@ -14,6 +14,18 @@ import 'package:flutter/widgets.dart';
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/Bookmark.svg
+  String get bookmark => 'assets/icons/Bookmark.svg';
+
+  /// File path: assets/icons/Category.svg
+  String get category => 'assets/icons/Category.svg';
+
+  /// File path: assets/icons/Home.svg
+  String get home => 'assets/icons/Home.svg';
+
+  /// File path: assets/icons/Profile.svg
+  String get profile => 'assets/icons/Profile.svg';
+
   /// File path: assets/icons/Vector.png
   AssetGenImage get vector => const AssetGenImage('assets/icons/Vector.png');
 
@@ -24,7 +36,15 @@ class $AssetsIconsGen {
   String get searchIcon2 => 'assets/icons/search_icon2.svg';
 
   /// List of all assets
-  List<dynamic> get values => [vector, searchIcon, searchIcon2];
+  List<dynamic> get values => [
+    bookmark,
+    category,
+    home,
+    profile,
+    vector,
+    searchIcon,
+    searchIcon2,
+  ];
 }
 
 class $AssetsImagesGen {
